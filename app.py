@@ -37,22 +37,25 @@ def user_login():
     return user_model_obj.user_authentication(email, password)
 
 
-def after_successful_login(role, email):
+def after_successful_login(role, user_id):
     if role == "U":
         print("Enter 1 to Credit")
         print("Enter 2 to Debit")
+        print("Enter 3 for mini-statement")
+
         choice = input("Enter your choice :")
+
         transaction_model_obj = TransactionModel()
         if choice == '1':
-            transaction_model_obj.user_credit_trans(email)
+            return transaction_model_obj.user_credit_trans(user_id)
         elif choice == '2':
-            transaction_model_obj.user_debit_trans(email)
+            return transaction_model_obj.user_debit_trans(user_id)
         else:
-            transaction_model_obj.user_all_trans(email)
+            return transaction_model_obj.user_all_trans(user_id)
     else:
-        email = input("Enter the user id:")
+        user_id_ref = input("Enter the user id:")
         transaction_model_obj = TransactionModel()
-        transaction_model_obj.admin_all_trans(email)
+        return transaction_model_obj.admin_all_trans(user_id_ref)
 
 
 while True:
@@ -74,7 +77,8 @@ while True:
         """ Login the user """
         result = user_login()
         if result:
-            after_successful_login(result[0], result[1])
+            return_value = after_successful_login(result[0], result[1])
+            print(return_value)
         else:
             print("The credentials that you have entered are wrong!!, Please try again")
     else:
